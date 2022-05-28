@@ -90,18 +90,24 @@ function getPlayUrl ({ bvid, cid }) {
     })
 }
 
-function getVideoStream ({ url }) {
-  return axios.get('http://api.bilibili.com/x/player/playurl', {
+function getVideoFile ({ url }) {
+  return axios.get(url, {
     headers: {
-      // 'Cookie': 'SESSDATA=xxx'
-    },
-    params: {}
+      Range: 'bytes=0-1023'
+    }
   })
+    .then((response) => {
+      console.log(response)
+      if (response.status < 400) return response.data
+    })
+    .then(data => {
+      console.log(data)
+    })
 }
 
 module.exports = {
   getVideoView,
   getPlayUrl,
   getPageList,
-  getVideoStream
+  getVideoFile
 }
