@@ -1,40 +1,43 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <form @submit.prevent="uploadFile">
-      <input type="file" ref="fileInputRef" accept="video/*">
-      <input type="submit" value="">
-    </form>
+    <video-player :options="videoOptions" v-if="false" />
+    <screen-canvas :width="500" :height="500" v-if="false" />
+    <file-uploader />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-import axios from 'axios'
+import ScreenCanvas from '@/components/screen-canvas/screen-canvas'
+import VideoPlayer from '@/components/video-player/video-player'
+import FileUploader from '@/components/file-uploader/file-uploader'
 
 export default {
   name: 'HomeView',
   data () {
     return {
+      videoOptions: {
+        autoplay: true,
+        controls: true,
+        sources: [
+          {
+            src: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+            type: 'video/mp4'
+          }
+        ]
+      }
     }
   },
   components: {
-    HelloWorld
+    ScreenCanvas,
+    VideoPlayer,
+    FileUploader
   },
   methods: {
-    uploadFile () {
-      const file = this.$refs.fileInputRef.files[0]
-      const formData = new FormData()
-      formData.append('file', file)
-      axios.defaults.baseURL = 'http://localhost:5000'
-      axios.post('/api/testUpload', formData, {
-        headers: {
-          'Content-type': 'multipart/form-data;charset=UTF-8'
-        }
-      })
-    }
+
   }
 }
 </script>
+
+<style lang="scss" scoped>
+
+</style>
