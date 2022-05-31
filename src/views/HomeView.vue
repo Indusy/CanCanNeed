@@ -1,43 +1,12 @@
 <template>
-  <div class="home">
-    <video-player :options="videoOptions" v-if="false" />
-    <screen-canvas :width="500" :height="500" v-if="false" />
-    <file-uploader />
-  </div>
+  <layout-header />
 </template>
 
 <script>
-import ScreenCanvas from '@/components/screen-canvas/screen-canvas'
-import VideoPlayer from '@/components/video-player/video-player'
-import FileUploader from '@/components/file-uploader/file-uploader'
-
+import LayoutHeader from '@/components/layout-header/layout-header'
 export default {
-  name: 'HomeView',
-  data () {
-    return {
-      videoOptions: {
-        autoplay: true,
-        controls: true,
-        sources: [
-          {
-            src: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
-            type: 'video/mp4'
-          }
-        ]
-      }
-    }
-  },
   components: {
-    ScreenCanvas,
-    VideoPlayer,
-    FileUploader
-  },
-  methods: {
-
+    LayoutHeader
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

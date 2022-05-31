@@ -1,4 +1,4 @@
-// import SpackMD5 from 'spark-md5'
+import SparkMD5 from 'spark-md5'
 
 export class Scheduler {
   #maxRunningTaskNumber
@@ -30,27 +30,44 @@ export class Scheduler {
 }
 
 export async function * genSlice (file, chunkSize = 1024 * 1024 * 2) {
-  // const [fname, fext] = file.split('.')
+  const [fname, fext] = file.name.split('.')
   let count = 0
   let offset = 0
   const fileSize = file.size
   const chunkCount = Math.ceil(fileSize / chunkSize)
+  const fhash = hashChunk(await file.arrayBuffer())
   const _slice = () => {
     const endOffset = Math.min(fileSize, offset + chunkSize)
     const chunk = file.slice(offset, endOffset)
     offset = endOffset
     return chunk
   }
-  while (count !== chunkCount) {
+  while (count <= chunkCount) {
+    const chunk = _slice()
+    const hash = hashChunk(await chunk.arrayBuffer())
     if (count < chunkCount) {
-      count++
-      yield _slice()
+      yield {
+        chunk,
+        hash,
+        fname,
+        fext,
+        fhash
+      }
     } else {
-      return _slice()
+      return {
+        chunk,
+        hash,
+        fname,
+        fext,
+        fhash
+      }
     }
+    count++
   }
 }
 
-export function hashChunks (file) {
-  // new SpackMD5.ArrayBuffer()
+export function hashChunk (chunk) {
+  const spark = new SparkMD5.ArrayBuffer()
+  spark.append(chunk)
+  return spark.end()
 }

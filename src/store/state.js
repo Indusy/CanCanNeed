@@ -1,5 +1,6 @@
 const state = {
-  socketConn: null
+  socketConn: null,
+  sideBarActive: false
 }
 
 export default state

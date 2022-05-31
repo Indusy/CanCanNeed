@@ -14,6 +14,7 @@ import axios from './axios'
 const fileInputRef = ref(null)
 const uploading = ref(false)
 const scheduler = new Scheduler(4)
+// eslint-disable-next-line no-unused-vars
 async function uploadFile (file) {
   return new Promise((resolve, reject) => {
     const fd = new FormData()
@@ -30,9 +31,10 @@ async function handleSubmit (evt) {
     const chunkList = []
     window.cl = chunkList
     const file = fileInputRef.value.files[0]
-    for await (const chunk of genSlice(file)) {
+    for await (const chunkInfo of genSlice(file)) {
       scheduler.add(() => {
-        uploadFile(new File(chunk, 'xxx 文件名'))
+        // uploadFile(new File([chunk], 'xxx 文件名'))
+        console.log(chunkInfo)
       })
     }
   }
